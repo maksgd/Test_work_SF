@@ -232,9 +232,8 @@ img {
   cursor: pointer;
   position: relative;
   transition-duration: 300ms; /* анимация */
-
-  animation: switch-btn 1s infinite;
 }
+
 .switch-btn::after {
   content: "";
   border: none;
@@ -250,30 +249,27 @@ img {
   position: absolute;
 }
 
-/* .switch-btn:hover {
-  animation: none;
-}
-
-@keyframes switch-btn {
-  0% {
-    box-shadow: 0 0 0 0 rgba(82, 82, 82, 0.4);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
-  }
-} */
-
 .switch-on {
   background: #464646;
   border: none;
 }
+
 .switch-on::after {
   left: 20px;
   background: #fff;
   border: 1px solid rgb(82, 82, 82);
+
+  animation: radial-pulse 1s;
+}
+
+@keyframes radial-pulse {
+  0% {
+    box-shadow: 0 0 0 0px rgba(23, 22, 22, 0.5);
+  }
+
+  100% {
+    box-shadow: 0 0 0 8px rgba(255, 255, 255, 0);
+  }
 }
 
 .switch__text {
