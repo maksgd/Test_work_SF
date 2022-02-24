@@ -1,0 +1,338 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+ul[class],
+ol[class] {
+  padding: 0;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+ul[class],
+ol[class] {
+  list-style: none;
+}
+
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* block ============================================== */
+
+.block__signIn {
+  font-family: "Raleway", sans-serif;
+  display: flex;
+  flex-direction: column; /*Кажд. нов. элем. в блоке
+    intro начнется с нов. строки */
+  justify-content: center; /*Контент выровнить по центру по оси Y*/
+
+  background: url(images/bg-sign-in-basic.jpeg) center no-repeat;
+  background-size: cover; /*Для 
+    пропорционального распределения размера изображения*/
+  height: 100vh;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto; /*Выравнивание контента по центру*/
+  padding: 0 15px;
+}
+
+.signIn__form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+}
+
+/* header blue ============================================== */
+
+.form__header {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  position: absolute;
+  top: -30px;
+  padding: 0 85px 0;
+  border-radius: 8px;
+  background: #2a83eb;
+  color: white;
+
+  box-shadow: 0 1px 5px #2a83eb;
+}
+
+.form__header__title {
+  font-size: 30px;
+  font-weight: 700;
+  margin: 25px 0 40px 0;
+}
+
+/* icons ============================================== */
+
+.form__header__icon {
+  display: flex;
+  justify-content: center;
+}
+
+.social__item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  margin: 0 20px 40px;
+}
+
+.social__icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+
+  fill: #ffffff; /* При работе с svg он может сменить цвет заливки */
+
+  transition: fill 0.1s linear;
+}
+
+/* body white ============================================== */
+
+.form__base {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  width: 380px;
+  border-radius: 10px;
+}
+
+.form__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 175px;
+}
+
+/* input ============================================== */
+
+.input__block {
+  position: relative;
+  box-sizing: border-box;
+
+  margin-bottom: 20px;
+}
+
+#inputLast {
+  margin-bottom: 30px;
+}
+
+.form__input {
+  width: 330px;
+  padding: 13px;
+  font-size: 14px;
+
+  border-radius: 5px;
+  border: 2px solid rgb(228, 228, 228);
+  outline: none;
+
+  transition: border 0.1s linear;
+}
+.form__input:focus {
+  border: 2px solid #2a83eb;
+}
+
+.form__label {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  opacity: 1;
+
+  color: rgb(143, 143, 143);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: Arial, Helvetica, sans-serif;
+
+  pointer-events: none;
+
+  transition: 0.15s linear;
+}
+
+.form__label-off {
+  opacity: 0;
+}
+
+.form__input:focus ~ label {
+  top: -8px;
+  opacity: 1;
+
+  font-size: 12px;
+  background: #fff;
+  color: #2a83eb;
+  font-weight: 500;
+  font-family: Arial, Helvetica, sans-serif;
+
+  padding: 0 2px 0 2px;
+}
+
+/* switch ============================================== */
+.form__switch {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-left: 10px;
+  margin-bottom: 45px;
+  border: none;
+
+  transition: 0.1s linear;
+}
+
+.switch-btn {
+  display: inline-block;
+  width: 35px; /* ширина переключателя */
+  height: 16px; /* высота переключателя */
+  border-radius: 12px; /* радиус скругления */
+  background: rgb(228, 228, 228); /* цвет фона */
+  border: none;
+  z-index: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition-duration: 300ms; /* анимация */
+
+  animation: switch-btn 1s infinite;
+}
+.switch-btn::after {
+  content: "";
+  border: none;
+  z-index: 1;
+  height: 19px; /* высота кнопки */
+  width: 19px; /* ширина кнопки */
+  border-radius: 18px; /* радиус кнопки */
+  background: #fff; /* цвет кнопки */
+  top: -1.5px; /* положение кнопки по вертикали относительно основы */
+  left: -1px; /* положение кнопки по горизонтали относительно основы */
+  transition-duration: 100ms; /* анимация */
+  border: 1px solid rgb(207, 207, 207);
+  position: absolute;
+}
+
+/* .switch-btn:hover {
+  animation: none;
+}
+
+@keyframes switch-btn {
+  0% {
+    box-shadow: 0 0 0 0 rgba(82, 82, 82, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(204, 169, 44, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+  }
+} */
+
+.switch-on {
+  background: #464646;
+  border: none;
+}
+.switch-on::after {
+  left: 20px;
+  background: #fff;
+  border: 1px solid rgb(82, 82, 82);
+}
+
+.switch__text {
+  cursor: pointer;
+  margin-left: 15px;
+  color: rgb(148, 147, 147);
+  font-size: 14px;
+  font-weight: 500;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* btn ============================================== */
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 35px;
+
+  border-radius: 5px;
+  border: none;
+
+  background: #2a83eb;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 600;
+
+  box-shadow: 0 1px 2px #2a83eb;
+  cursor: pointer;
+  transition: 0.2s linear;
+}
+
+.btn:hover {
+  box-shadow: 0rem 0.875rem 1.625rem -0.75rem rgb(26 115 232 / 40%),
+    0rem 0.25rem 1.4375rem 0rem rgb(26 115 232 / 15%),
+    0rem 0.5rem 0.625rem -0.3125rem rgb(26 115 232 / 20%);
+}
+
+/* footer ============================================== */
+
+.form__footer {
+  display: flex;
+  margin-bottom: 35px;
+}
+
+.form__footer__text {
+  font-family: "Raleway", sans-serif;
+  color: rgb(143, 143, 143);
+  font-weight: 0;
+  font-size: 15px;
+}
+
+.form__footer__link {
+  padding-left: 5px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  color: #2a83eb;
+}
