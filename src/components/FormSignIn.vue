@@ -54,7 +54,7 @@
       <div class="signIn__form">
         <!-- Header blue -->
         <div class="form__header">
-          <div class="form__header__title">Sign in</div>
+          <div class="form__header__title">Авторизация</div>
           <div class="form__header__icon">
             <a class="social__item" href="#" target="_blank">
               <svg class="social__icon">
@@ -78,37 +78,103 @@
         <!-- Form bodyWhite -->
         <form class="form__base">
           <div class="form__body">
+            <!-- Inputs -->
             <div class="input__block">
-              <input v-model="phone" class="form__input" type="text" />
+              <input
+                v-model="login"
+                :class="{
+                  ErrorInLP: hasErrorInLP
+                }"
+                class="form__input"
+                type="text"
+              />
               <label
-                :class="{ 'form__label-off': phone }"
+                :class="{ 'form__label-off': login }"
                 class="form__label"
                 for=""
-                >Phone</label
+                >Логин</label
               >
             </div>
             <div id="inputLast" class="input__block">
-              <input v-model="password" class="form__input" type="text" />
+              <input
+                v-model="password"
+                :class="{
+                  ErrorInLP: hasErrorInLP
+                }"
+                class="form__input"
+                type="text"
+              />
               <label
                 :class="{ 'form__label-off': password }"
                 class="form__label"
                 for=""
-                >Password</label
+                >Пароль</label
               >
             </div>
-            <label @click="changeSwitch" class="form__switch">
+            <!-- Switch -->
+            <label v-if="switchBtn" class="form__switch">
               <div
+                @click="changeSwitch"
                 class="switch-btn"
                 :class="{
-                  'switch-on': counterSwitch
+                  'switch-on': switchStick
                 }"
               ></div>
-              <span class="switch__text">Remember me</span>
+              <span @click="changeSwitch" class="switch__text"
+                >Запомнить меня</span
+              >
             </label>
-            <button @click.prevent="signIn()" class="btn">Sign IN</button>
-            <div class="form__footer">
-              <span class="form__footer__text">Don't have an account?</span>
-              <a class="form__footer__link" href="">Sign up</a>
+            <!-- Input forgot pass -->
+            <div v-if="switchInputPass" class="input__block">
+              <input
+                v-model="phone"
+                :class="{
+                  ErrorInLP: hasErrorInPho
+                }"
+                class="form__input"
+                type="text"
+              />
+              <label
+                :class="{ 'form__label-off': phone }"
+                class="form__label"
+                for=""
+                >Введите ваш номер</label
+              >
+            </div>
+            <div v-if="addBlockCode" class="input__block">
+              <input
+                v-model="securCode"
+                :class="{
+                  ErrorInLP: hasErrorInCode
+                }"
+                class="form__input"
+                type="text"
+              />
+              <label
+                :class="{ 'form__label-off': securCode }"
+                class="form__label"
+                for=""
+                >Код безопасности</label
+              >
+            </div>
+            <!-- Btn -->
+            <button v-if="switchBtn" @click.prevent="signIn" class="btn">
+              Войти
+            </button>
+            <button v-if="switchBtnCode" @click.prevent="resSMS" class="btn">
+              Отправить СМС
+            </button>
+            <button
+              v-if="switchBtnRecover"
+              @click.prevent="resPass"
+              class="btn"
+            >
+              Восстановить данные
+            </button>
+
+            <!-- Footer -->
+            <div @click.prevent="forgotPass" class="form__footer">
+              <a class="form__footer__link" href="">Забыл пароль!</a>
             </div>
           </div>
         </form>
@@ -123,10 +189,21 @@ export default {
 
   data() {
     return {
-      phone: "",
+      login: "",
       password: "",
-      counterSwitch: false,
-      testObj: {}
+      phone: "",
+      securCode: "",
+
+      hasErrorInLP: false,
+      hasErrorInPho: false,
+      hasErrorInCode: false,
+      switchStick: false,
+      testObj: {},
+      switchInputPass: false,
+      addBlockCode: false,
+      switchBtn: true,
+      switchBtnCode: false,
+      switchBtnRecover: false
     };
   },
 
@@ -139,8 +216,14 @@ export default {
   computed: {},
 
   methods: {
+    forgotPass() {
+      this.switchInputPass = this.switchInputPass ? false : true;
+      this.switchBtn = this.switchBtn ? false : true;
+      this.switchBtnCode = this.switchBtnCode ? false : true;
+    },
+
     changeSwitch() {
-      this.counterSwitch = this.counterSwitch ? false : true;
+      this.switchStick = this.switchStick ? false : true;
     },
 
     async signIn() {
@@ -153,10 +236,63 @@ export default {
       this.testObj = data.users[0];
 
       if (
-        this.phone == this.testObj.phone &&
+        this.login == this.testObj.phone &&
         this.password == this.testObj.password
       ) {
+        this.hasErrorInLP = false;
+        this.login = "";
+        this.password = "";
         console.log("Все ок, заходите)");
+      } else {
+        this.hasErrorInLP = true;
+      }
+    },
+
+    async resSMS() {
+      const res = await fetch(
+        `https://testobj-9f4e0-default-rtdb.firebaseio.com/db.json`
+      );
+
+      const data = await res.json();
+
+      this.testObj = data.users[0];
+
+      if (this.phone == this.testObj.phone) {
+        this.addBlockCode = true;
+
+        this.hasErrorInLP = false;
+
+        this.hasErrorInPho = false;
+        this.switchBtnCode = false;
+        this.switchBtnRecover = true;
+      } else {
+        this.hasErrorInLP = false;
+        this.hasErrorInPho = true;
+      }
+    },
+
+    async resPass() {
+      const res = await fetch(
+        `https://testobj-9f4e0-default-rtdb.firebaseio.com/db.json`
+      );
+
+      const data = await res.json();
+
+      this.testObj = data.users[0];
+
+      if (this.securCode == this.testObj.code) {
+        this.login = this.testObj.phone;
+        this.password = this.testObj.password;
+
+        this.switchBtnRecover = false;
+        this.switchInputPass = false;
+        this.addBlockCode = false;
+
+        this.switchBtn = true;
+
+        this.hasErrorInCode = false;
+      } else {
+        this.hasErrorInCode = true;
       }
     }
   },
