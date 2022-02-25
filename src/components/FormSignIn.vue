@@ -79,7 +79,7 @@
         <form class="form__base">
           <div class="form__body">
             <!-- Inputs -->
-            <div class="input__block">
+            <div v-if="switchBtn" class="input__block">
               <input
                 v-model="login"
                 :class="{
@@ -95,7 +95,7 @@
                 >Логин</label
               >
             </div>
-            <div id="inputLast" class="input__block">
+            <div v-if="switchBtn" id="inputLast" class="input__block">
               <input
                 v-model="password"
                 :class="{
@@ -173,8 +173,19 @@
             </button>
 
             <!-- Footer -->
-            <div @click.prevent="forgotPass" class="form__footer">
+            <div
+              v-if="switchBtn"
+              @click.prevent="forgotPass"
+              class="form__footer"
+            >
               <a class="form__footer__link" href="">Забыл пароль!</a>
+            </div>
+            <div
+              v-if="!switchBtn"
+              @click.prevent="forgotPass"
+              class="form__footer"
+            >
+              <a class="form__footer__link" href="">Вернуться</a>
             </div>
           </div>
         </form>
@@ -220,6 +231,7 @@ export default {
       this.switchInputPass = this.switchInputPass ? false : true;
       this.switchBtn = this.switchBtn ? false : true;
       this.switchBtnCode = this.switchBtnCode ? false : true;
+      this.hasErrorInPho = false;
     },
 
     changeSwitch() {
